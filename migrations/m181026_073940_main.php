@@ -14,7 +14,7 @@ class m181026_073940_main extends Migration
     {
         $this->createTable('graph_datas', [
             'id' => $this->primaryKey(),
-            'time' => $this->integer()->notNull(),
+            'time' => $this->date()->notNull(),
             'amount' => $this->integer()->notNull()
         ]);
     }
