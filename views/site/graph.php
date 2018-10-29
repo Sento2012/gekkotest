@@ -9,27 +9,6 @@ use yii\widgets\ActiveForm;
 
 <?php $form = ActiveForm::begin() ?>
 
-<?= /** @var app\models\GraphForm $model */
-$form->field($model, 'start')->widget(DatePicker::className(), [
-    'inline' => true,
-    'template' => '<div class="well well-sm" style="background-color: #fff; width:250px">{input}</div>',
-    'clientOptions' => [
-        'format' => 'yyyy-mm-dd'
-    ]
-]); ?>
-
-<?= $form->field($model, 'end')->widget(DatePicker::className(), [
-    'inline' => true,
-    'template' => '<div class="well well-sm" style="background-color: #fff; width:250px">{input}</div>',
-    'clientOptions' => [
-        'format' => 'yyyy-mm-dd'
-    ]
-]); ?>
-
-<button>Отправить</button>
-
-<?php ActiveForm::end() ?>
-
 <?php /** @var app\models\GraphData $graphData */
 if ($graphData) {
     echo Highcharts::widget([
