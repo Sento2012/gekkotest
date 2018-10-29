@@ -157,10 +157,7 @@ class SiteController extends Controller
     public function actionGraph()
     {
         $model = new GraphForm();
-        $graphData = null;
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $graphData = $model->getGraphData();
-        }
+        $graphData = $model->getGraphData();
 
         return $this->render('graph', ['model' => $model, 'graphData' => $graphData ? $graphData : null]);
     }

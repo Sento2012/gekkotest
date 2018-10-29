@@ -46,7 +46,7 @@ class GraphForm extends Model
      */
     public function getGraphData()
     {
-        $data = GraphData::find()->where(['BETWEEN', 'time', $this->start, $this->end])->orderBy('time')->all();
+        $data = GraphData::find()->orderBy('time')->all();
 
         return $data;
     }
