@@ -60,7 +60,6 @@ class UploadForm extends Model
             $oldTime = 0;
             foreach ($out['type'] as $key => $type) {
                 $amount += $out['amount'][$key];
-                echo $out['time'][$key];
                 $time = DateTime::createFromFormat('Y.m.d H:i:s', $out['time'][$key])->setTime(0, 0, 0);
                 if (!$oldTime) {
                     $oldTime = $time;
@@ -87,7 +86,6 @@ class UploadForm extends Model
      */
     public function setGraphData($time, $amount)
     {
-        echo $time . '<br>';
         $graphData = GraphData::findOne(['time' => $time]);
         if (!$graphData) {
             $graphData = new GraphData([
