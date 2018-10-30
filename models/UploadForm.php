@@ -57,15 +57,20 @@ class UploadForm extends Model
             $regex = '/<tr.*?align=right>.*?<td class=msdate nowrap>(?<time>[\d\.\:\s]+)<\/td><td>(?<type>.*?)<\/td>.*?<td class=mspt>(?<amount>[\d\-\.\s]*?)<\/td><\/tr>/isu';
             preg_match_all($regex, $content, $out);
             $amount = 0;
+            $oldAmount = 0;
             $oldTime = 0;
             foreach ($out['type'] as $key => $type) {
-                $amount += preg_replace('/\s+/isu', '', $out['amount'][$key]);
                 $time = DateTime::createFromFormat('Y.m.d H:i:s', $out['time'][$key])->setTime(0, 0, 0);
                 if (!$oldTime) {
                     $oldTime = $time;
+                    $oldAmount = $amount;
                 }
+                if ($amount) {
+                    $oldAmount = $amount;
+                }
+                $amount += preg_replace('/\s+/isu', '', $out['amount'][$key]);
                 if ((date_diff($oldTime, $time)->format('%a') > 1)) {
-                    $this->fillEmptyTime($oldTime, $time, $amount);
+                    $this->fillEmptyTime($oldTime, $time, $oldAmount);
                 }
                 echo $out['time'][$key] . ' ' . $time->format('Y-m-d') . ' ' . $amount .  '<br>';
                 $this->setGraphData($time->format('Y-m-d'), $amount);
