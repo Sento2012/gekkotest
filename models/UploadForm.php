@@ -58,7 +58,7 @@ class UploadForm extends Model
             preg_match_all($regex, $content, $out);
             $amount = 0;
             $oldAmount = 0;
-            $oldTime = 0;
+            $oldTime = null;
             foreach ($out['type'] as $key => $type) {
                 $time = DateTime::createFromFormat('Y.m.d H:i:s', $out['time'][$key])->setTime(0, 0, 0);
                 if (!$oldTime) {
@@ -71,6 +71,7 @@ class UploadForm extends Model
                 $amount += preg_replace('/\s+/isu', '', $out['amount'][$key]);
                 if ((date_diff($oldTime, $time)->format('%a') > 1)) {
                     $this->fillEmptyTime($oldTime, $time, $oldAmount);
+                    $oldTime = $time;
                 }
                 echo $out['time'][$key] . ' ' . $time->format('Y-m-d') . ' ' . $amount .  '<br>';
                 $this->setGraphData($time->format('Y-m-d'), $amount);
