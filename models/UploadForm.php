@@ -54,12 +54,12 @@ class UploadForm extends Model
     {
         if ($fileName) {
             $content = file_get_contents($fileName);
-            $regex = '/<tr.*?align=right>.*?<td>(?<type>.*?)<\/td>.*?<td class=msdate nowrap>(?<time>[\d\.\:\s]+)<\/td>.*?<td class=mspt>(?<amount>[\d\-\.]*?)<\/td><\/tr>/isu';
+            $regex = '/<tr.*?align=right>.*?<td class=msdate nowrap>(?<time>[\d\.\:\s]+)<\/td><td>(?<type>.*?)<\/td>.*?<td class=mspt>(?<amount>[\d\-\.\s]*?)<\/td><\/tr>/isu';
             preg_match_all($regex, $content, $out);
             $amount = 0;
             $oldTime = 0;
             foreach ($out['type'] as $key => $type) {
-                $amount += $out['amount'][$key];
+                $amount += preg_replace('/\s+/isu', '', $out['amount'][$key]);
                 $time = DateTime::createFromFormat('Y.m.d H:i:s', $out['time'][$key])->setTime(0, 0, 0);
                 if (!$oldTime) {
                     $oldTime = $time;
