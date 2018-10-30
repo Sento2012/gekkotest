@@ -64,7 +64,7 @@ class UploadForm extends Model
                 if (!$oldTime) {
                     $oldTime = $time;
                 }
-                if ((date_diff($oldTime, $time)->format('%a') > 1)) {
+                if ((date_diff($oldTime, $time)->format('%a') >= 1)) {
                     $this->fillEmptyTime($oldTime, $time, $amount);
                 }
                 $this->setGraphData($time->format('Y-m-d'), $amount);
