@@ -59,11 +59,7 @@ class UploadForm extends Model
             $amount = 0;
             $oldTime = 0;
             foreach ($out['type'] as $key => $type) {
-                if (in_array($type, ['Ticket', 'balance'])) {
-                    $amount = $out['amount'][$key];
-                } else {
-                    $amount += $out['amount'][$key];
-                }
+                $amount += $out['amount'][$key];
                 $time = DateTime::createFromFormat('Y.m.d H:i:s', $out['time'][$key])->setTime(0, 0, 0);
                 if (!$oldTime) {
                     $oldTime = $time;
