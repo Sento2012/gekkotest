@@ -86,6 +86,7 @@ class UploadForm extends Model
      */
     public function setGraphData($time, $amount)
     {
+        echo $time . '<br>';
         $graphData = GraphData::findOne(['time' => $time]);
         if (!$graphData) {
             $graphData = new GraphData([
@@ -95,7 +96,6 @@ class UploadForm extends Model
         } else {
             $graphData->amount = $amount;
         }
-        print_r($graphData);
         $graphData->save();
 
         return true;
