@@ -73,7 +73,6 @@ class UploadForm extends Model
                     $this->fillEmptyTime($oldTime, $time, $oldAmount);
                     $oldTime = $time;
                 }
-                echo $out['time'][$key] . ' ' . $time->format('Y-m-d') . ' ' . $amount .  '<br>';
                 $this->setGraphData($time->format('Y-m-d'), $amount);
             }
 
