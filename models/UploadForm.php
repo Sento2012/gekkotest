@@ -4,6 +4,7 @@ namespace app\models;
 
 use DateTime;
 use Yii;
+use yii\base\Exception;
 use yii\base\Model;
 use yii\web\UploadedFile;
 
@@ -60,7 +61,11 @@ class UploadForm extends Model
             $oldAmount = 0;
             $oldTime = null;
             foreach ($out['type'] as $key => $type) {
-                $time = DateTime::createFromFormat('Y.m.d H:i:s', $out['time'][$key])->setTime(0, 0, 0);
+                try {
+                    $time = DateTime::createFromFormat('Y.m.d H:i:s', $out['time'][$key])->setTime(0, 0, 0);
+                } catch (\Exception $e) {
+                    $time = DateTime::createFromFormat('Y.m.d H:i', $out['time'][$key])->setTime(0, 0, 0);
+                }
                 if (!$oldTime) {
                     $oldTime = $time;
                     $oldAmount = $amount;
@@ -68,7 +73,11 @@ class UploadForm extends Model
                 if ($amount) {
                     $oldAmount = $amount;
                 }
-                $amount += preg_replace('/\s+/isu', '', $out['amount'][$key]);
+                if ($type == 'sell') {
+                    $amount -= preg_replace('/\s+/isu', '', $out['amount'][$key]);
+                } else {
+                    $amount += preg_replace('/\s+/isu', '', $out['amount'][$key]);
+                }
                 if ((date_diff($oldTime, $time)->format('%a') > 1)) {
                     $this->fillEmptyTime($oldTime, $time, $oldAmount);
                     $oldTime = $time;
