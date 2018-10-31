@@ -61,16 +61,7 @@ class UploadForm extends Model
             $oldAmount = 0;
             $oldTime = null;
             foreach ($out['type'] as $key => $type) {
-                try {
-                    $time = DateTime::createFromFormat('Y.m.d H:i:s', $out['time'][$key]);
-                } catch (\Exception $e) {
-                    $time = DateTime::createFromFormat('Y.m.d H:i', $out['time'][$key]);
-                }
-                if ($time) {
-                    $time->setTime(0, 0, 0);
-                } else {
-                    continue;
-                }
+                $time = DateTime::createFromFormat($this->checkFormat($out['time'][$key]), $out['time'][$key])->setTime(0, 0, 0);;
                 if (!$oldTime) {
                     $oldTime = $time;
                     $oldAmount = $amount;
@@ -96,6 +87,14 @@ class UploadForm extends Model
         return false;
     }
 
+    private function checkFormat($time)
+    {
+        if (preg_match('/^\d+\.\d+\.\d+\s\d+\:\d+$/isu', $time)) {
+            return 'Y.m.d H:i';
+        } else {
+            return 'Y.m.d H:i:s';
+        }
+    }
 
     /**
      * Load graph data
