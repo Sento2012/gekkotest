@@ -64,7 +64,7 @@ class UploadForm extends Model
                 try {
                     $time = DateTime::createFromFormat('Y.m.d H:i:s', $out['time'][$key]);
                 } catch (\Exception $e) {
-                    $time = DateTime::createFromFormat('Y.m.d H:i', $out['time'][$key])
+                    $time = DateTime::createFromFormat('Y.m.d H:i', $out['time'][$key]);
                 }
                 if ($time) {
                     $time->setTime(0, 0, 0);
