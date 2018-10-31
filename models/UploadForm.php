@@ -53,6 +53,7 @@ class UploadForm extends Model
      */
     public function processFileContent($fileName = '')
     {
+        Yii::$app->db->createCommand()->truncateTable('graph_datas')->execute();
         if ($fileName) {
             $content = file_get_contents($fileName);
             $regex = '/<tr.*?align=right>.*?<td class=msdate nowrap>(?<time>[\d\.\:\s]+)<\/td><td>(?<type>.*?)<\/td>.*?<td class=mspt>(?<amount>[\d\-\.\s]*?)<\/td><\/tr>/isu';
