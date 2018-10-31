@@ -62,9 +62,14 @@ class UploadForm extends Model
             $oldTime = null;
             foreach ($out['type'] as $key => $type) {
                 try {
-                    $time = DateTime::createFromFormat('Y.m.d H:i:s', $out['time'][$key])->setTime(0, 0, 0);
+                    $time = DateTime::createFromFormat('Y.m.d H:i:s', $out['time'][$key]);
                 } catch (\Exception $e) {
-                    $time = DateTime::createFromFormat('Y.m.d H:i', $out['time'][$key])->setTime(0, 0, 0);
+                    $time = DateTime::createFromFormat('Y.m.d H:i', $out['time'][$key])
+                }
+                if ($time) {
+                    $time->setTime(0, 0, 0);
+                } else {
+                    continue;
                 }
                 if (!$oldTime) {
                     $oldTime = $time;
